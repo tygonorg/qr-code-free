@@ -24,208 +24,313 @@
   <script type="application/ld+json" data-dynamic-seo></script>
   <style>
     :root {
+      --bg-color-light: #f0f4f9;
+      --bg-color-dark: #1a202c;
+      --glass-bg-light: rgba(255, 255, 255, 0.7);
+      --glass-bg-dark: rgba(45, 55, 72, 0.7);
+      --border-color-light: rgba(203, 213, 225, 0.5);
+      --border-color-dark: rgba(255, 255, 255, 0.1);
+      --shadow-light: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      --shadow-dark: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      --text-color-light: #1f2933;
+      --text-color-dark: #f7fafc;
+      --primary-accent: #3b82f6;
+      --secondary-accent: #10b981;
+
       color-scheme: light dark;
-      font-family: "Segoe UI", Tahoma, sans-serif;
-      background: linear-gradient(135deg, #f9fafb, #e6f0ff);
-      color: #1f2933;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background: var(--bg-color-light);
+      color: var(--text-color-light);
     }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        background: var(--bg-color-dark);
+        color: var(--text-color-dark);
+      }
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 16px;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
     }
+
     .app {
-      width: min(960px, 100%);
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(45px);
-      border-radius: 20px;
-      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.15);
+      width: min(1024px, 100%);
+      background: var(--glass-bg-light);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border-radius: 1rem;
+      border: 1px solid var(--border-color-light);
+      box-shadow: var(--shadow-light);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .app {
+        background: var(--glass-bg-dark);
+        border: 1px solid var(--border-color-dark);
+        box-shadow: var(--shadow-dark);
+      }
+    }
+
     header {
-      padding: 28px 36px 20px;
-      background: linear-gradient(120deg, #2563eb, #06b6d4);
-      color: white;
+      padding: 1.75rem 2rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-bottom: 1px solid var(--border-color-light);
+      color: var(--text-color-light);
     }
+
+    @media (prefers-color-scheme: dark) {
+      header {
+        border-bottom: 1px solid var(--border-color-dark);
+        color: var(--text-color-dark);
+      }
+    }
+
     header h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.75rem, 2.4vw, 2.4rem);
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.5rem, 3vw, 2rem);
     }
     header p {
       margin: 0;
       opacity: 0.9;
-      font-size: clamp(1rem, 1.4vw, 1.1rem);
+      font-size: clamp(0.9rem, 2vw, 1rem);
     }
+
     main {
       display: grid;
-      gap: 24px;
-      padding: 32px 36px 40px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      grid-template-columns: 1fr;
     }
+
+    @media (min-width: 768px) {
+      main {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+    }
+
     form {
       display: grid;
-      gap: 18px;
+      gap: 1.25rem;
     }
     .field {
       display: grid;
-      gap: 10px;
+      gap: 0.75rem;
     }
     label {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
+
     input[type="text"],
     input[type="email"],
     input[type="number"],
     select,
     textarea {
       width: 100%;
-      border-radius: 12px;
-      border: 1px solid #cbd5f5;
-      padding: 12px 14px;
-      font-size: 0.97rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color-light);
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--text-color-light);
     }
+
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 100px;
     }
+
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
     }
+
+    @media (prefers-color-scheme: dark) {
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      select,
+      textarea {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color-dark);
+        color: var(--text-color-dark);
+      }
+    }
+
     .radio-group {
       display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
+
     .radio-card {
-      border-radius: 12px;
-      border: 1px solid #ccd7ee;
-      padding: 12px 14px;
-      background: rgba(248, 250, 255, 0.9);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color-light);
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.2);
       display: flex;
-      gap: 10px;
+      gap: 0.75rem;
       align-items: center;
       cursor: pointer;
-      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.2s ease;
     }
+
     .radio-card:hover {
-      border-color: #a5b4fc;
-      transform: translateY(-1px);
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+      border-color: var(--primary-accent);
+      background: rgba(59, 130, 246, 0.1);
     }
+
     .radio-card input {
-      accent-color: #2563eb;
+      accent-color: var(--primary-accent);
       margin: 0;
     }
+
     .radio-card.active {
-      border-color: #0f62fe;
-      background: rgba(229, 240, 255, 0.9);
-      box-shadow: 0 18px 36px rgba(37, 99, 235, 0.16);
+      border-color: var(--primary-accent);
+      background: rgba(59, 130, 246, 0.2);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
     }
+
     .options-grid {
       display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
+
     .color-picker {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 0.75rem;
     }
+
     .color-picker > div {
-      justify-content: space-between;
+      display: grid;
+      gap: 0.25rem;
     }
+
     input[type="color"] {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      border: none;
+      border: 2px solid var(--border-color-light);
       padding: 0;
       background: none;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.12);
+      transition: transform 0.2s ease;
     }
+
+    input[type="color"]:hover {
+        transform: scale(1.1);
+    }
+
     .qr-preview {
-      border-radius: 16px;
-      background: rgba(247, 249, 255, 0.95);
-      border: 1px solid rgba(201, 213, 239, 0.6);
-      padding: 24px;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid var(--border-color-light);
+      padding: 1.5rem;
       display: grid;
-      gap: 20px;
+      gap: 1.25rem;
       align-content: start;
       text-align: center;
     }
+
     .qr-preview h2 {
       margin: 0;
       font-size: 1.25rem;
     }
+
     .qr-canvas-wrapper {
       justify-self: center;
       overflow: auto;
       max-width: 100%;
-      border-radius: 16px;
+      border-radius: 1rem;
+      box-shadow: var(--shadow-light);
     }
+
     #qrCanvas {
       justify-self: center;
-      border-radius: 16px;
+      border-radius: 1rem;
       background-color: #fff;
-      padding: 18px;
-      box-shadow: 0 24px 40px rgba(15, 23, 42, 0.15);
+      padding: 1rem;
     }
+
     button {
       border: none;
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 0.75rem;
+      padding: 1rem;
       font-weight: 600;
       font-size: 1rem;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.2s ease;
     }
+
     .btn-primary {
-      background: linear-gradient(120deg, #2563eb, #0f62fe);
+      background: var(--primary-accent);
       color: white;
-      box-shadow: 0 18px 32px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
     }
     .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25);
+      background: #3575df;
+      box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.45);
+      transform: translateY(-2px);
     }
+
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid #cbd5f5;
-      color: #1f2933;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-color-light);
+      color: var(--text-color-light);
     }
     .btn-secondary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 20px rgba(15, 23, 42, 0.12);
+      background: rgba(255, 255, 255, 0.8);
+      transform: translateY(-2px);
     }
+
     .helper {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #63748a;
     }
+
     footer {
       text-align: center;
-      padding: 20px 36px 28px;
-      background: rgba(244, 246, 255, 0.9);
+      padding: 1.5rem 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-top: 1px solid var(--border-color-light);
       font-size: 0.9rem;
-      color: #64748b;
+      color: var(--text-color-light);
     }
-    @media (max-width: 768px) {
-      header, main, footer {
-        padding-inline: 20px;
+
+    @media (prefers-color-scheme: dark) {
+      .helper { color: #a0aec0; }
+      footer {
+        border-top: 1px solid var(--border-color-dark);
+        color: var(--text-color-dark);
       }
+    }
+
+    @media (max-width: 767px) {
+      body { padding: 0; }
       .app {
         border-radius: 0;
         min-height: 100vh;
+        box-shadow: none;
+        border: none;
+      }
+      header, main, footer {
+        padding-inline: 1.25rem;
       }
     }
   </style>
