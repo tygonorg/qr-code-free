@@ -4,6 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trình tạo QR Code miễn phí</title>
+  <meta name="description" content="Tạo mã QR miễn phí cho liên kết, văn bản hoặc email với công cụ trực tuyến hỗ trợ tùy chỉnh màu sắc, kích thước và tải PNG ngay lập tức.">
+  <meta name="keywords" content="QR Code, mã QR, tạo QR miễn phí, QR generator, QR code online">
+  <meta name="robots" content="index,follow">
+  <meta name="author" content="QR Code Free">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="canonical" id="canonicalLink" href="">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Trình tạo QR Code miễn phí">
+  <meta property="og:description" content="Tạo mã QR miễn phí cho liên kết, văn bản hoặc email với công cụ trực tuyến hỗ trợ tùy chỉnh màu sắc, kích thước và tải PNG ngay lập tức.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="og-image.svg">
+  <meta property="og:image:type" content="image/svg+xml">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Trình tạo QR Code miễn phí">
+  <meta name="twitter:description" content="Tạo mã QR miễn phí cho liên kết, văn bản hoặc email với công cụ trực tuyến hỗ trợ tùy chỉnh màu sắc, kích thước và tải PNG ngay lập tức.">
+  <meta name="twitter:image" content="og-image.svg">
+  <script type="application/ld+json" data-dynamic-seo></script>
   <style>
     :root {
       color-scheme: light dark;
@@ -100,11 +118,12 @@
       transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .radio-card:hover {
-      border-color: #2563eb;
+      border-color: #a5b4fc;
       transform: translateY(-1px);
       box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
     }
     .radio-card input {
+      accent-color: #2563eb;
       margin: 0;
     }
     .radio-card.active {
@@ -114,13 +133,15 @@
     }
     .options-grid {
       display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
     .color-picker {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+    }
+    .color-picker > div {
       justify-content: space-between;
     }
     input[type="color"] {
@@ -146,6 +167,12 @@
     .qr-preview h2 {
       margin: 0;
       font-size: 1.25rem;
+    }
+    .qr-canvas-wrapper {
+      justify-self: center;
+      overflow: auto;
+      max-width: 100%;
+      border-radius: 16px;
     }
     #qrCanvas {
       justify-self: center;
@@ -192,7 +219,7 @@
       font-size: 0.9rem;
       color: #64748b;
     }
-    @media (max-width: 700px) {
+    @media (max-width: 768px) {
       header, main, footer {
         padding-inline: 20px;
       }
@@ -256,20 +283,6 @@
               <span class="helper">Kích thước (px)</span>
               <input id="sizeInput" name="size" type="number" min="150" max="800" value="320">
             </div>
-            <div class="color-picker">
-              <div>
-                <span class="helper">Màu mã QR</span>
-                <strong id="fgColorCode">#0f172a</strong>
-              </div>
-              <input id="foregroundColor" type="color" value="#0f172a">
-            </div>
-            <div class="color-picker">
-              <div>
-                <span class="helper">Nền mã QR</span>
-                <strong id="bgColorCode">#ffffff</strong>
-              </div>
-              <input id="backgroundColor" type="color" value="#ffffff">
-            </div>
             <div>
               <span class="helper">Viền trắng</span>
               <select id="marginSelect" name="margin">
@@ -278,6 +291,20 @@
                 <option value="4">Rộng</option>
                 <option value="0">Không viền</option>
               </select>
+            </div>
+            <div class="color-picker">
+              <input id="foregroundColor" type="color" value="#0f172a">
+              <div>
+                <span class="helper">Màu mã QR</span>
+                <strong id="fgColorCode">#0f172a</strong>
+              </div>
+            </div>
+            <div class="color-picker">
+              <input id="backgroundColor" type="color" value="#ffffff">
+              <div>
+                <span class="helper">Nền mã QR</span>
+                <strong id="bgColorCode">#ffffff</strong>
+              </div>
             </div>
           </div>
         </section>
@@ -289,7 +316,9 @@
 
       <section class="qr-preview">
         <h2>Xem trước</h2>
-        <canvas id="qrCanvas" width="320" height="320" aria-label="QR code preview"></canvas>
+        <div class="qr-canvas-wrapper">
+          <canvas id="qrCanvas" width="320" height="320" aria-label="QR code preview"></canvas>
+        </div>
         <button id="downloadBtn" class="btn-secondary" type="button" disabled>Tải về PNG</button>
       </section>
     </main>
@@ -299,8 +328,44 @@
   </div>
 
   <script>
-    // QRCode generation using minimal dependency-free algorithm based on https://github.com/soldair/node-qrcode
-    // To keep file self-contained, we embed a compact QR generator adapted from qrcode.js (MIT License).
+    /* QRCode generation using minimal dependency-free algorithm based on https://github.com/soldair/node-qrcode.
+       To keep file self-contained, we embed a compact QR generator adapted from qrcode.js (MIT License). */
+
+    (function updateSeoMetadata() {
+      var url = new URL(window.location.href);
+      var canonicalHref = url.origin + url.pathname;
+      if (canonicalHref.endsWith("index.html")) {
+        canonicalHref = canonicalHref.slice(0, -10);
+        if (!canonicalHref.endsWith("/")) canonicalHref += "/";
+      }
+      var canonicalLink = document.getElementById("canonicalLink");
+      if (canonicalLink) canonicalLink.setAttribute("href", canonicalHref);
+      var ogUrlMeta = document.querySelector('meta[property="og:url"]');
+      if (ogUrlMeta) ogUrlMeta.setAttribute("content", canonicalHref);
+      var seoImageUrl = new URL("og-image.svg", canonicalHref).href;
+      var ogImageMeta = document.querySelector('meta[property="og:image"]');
+      if (ogImageMeta) ogImageMeta.setAttribute("content", seoImageUrl);
+      var twitterImageMeta = document.querySelector('meta[name="twitter:image"]');
+      if (twitterImageMeta) twitterImageMeta.setAttribute("content", seoImageUrl);
+      var ldJsonScript = document.querySelector('script[type="application/ld+json"][data-dynamic-seo]');
+      if (ldJsonScript) {
+        ldJsonScript.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Trình tạo QR Code miễn phí",
+          "url": canonicalHref,
+          "description": "Tạo mã QR miễn phí cho liên kết, văn bản hoặc email với công cụ trực tuyến hỗ trợ tùy chỉnh màu sắc, kích thước và tải PNG ngay lập tức.",
+          "inLanguage": "vi-VN",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "VND"
+          }
+        });
+      }
+    })();
 
     /*! QRCode generator (c) 2009 Kazuhiko Arase MIT License */
     (function() {
@@ -712,10 +777,10 @@
 
       var QRRSBlock = {
         RS_BLOCK_TABLE: [
-          // L
-          // M
-          // Q
-          // H
+          /* L */
+          /* M */
+          /* Q */
+          /* H */
           [1, 26, 19], [1, 26, 16], [1, 26, 13], [1, 26, 9],
           [1, 44, 34], [1, 44, 28], [1, 44, 22], [1, 44, 16],
           [1, 70, 55], [1, 70, 44], [2, 35, 17], [2, 35, 13],
@@ -975,6 +1040,7 @@
     const bgColorCode = document.getElementById("bgColorCode");
     const canvas = document.getElementById("qrCanvas");
     const downloadBtn = document.getElementById("downloadBtn");
+    let debounceTimer;
 
     function setActiveContent(type) {
       const sections = {
@@ -1029,8 +1095,11 @@
       });
     });
 
-    form.addEventListener("input", () => {
-      autoGenerate();
+    form.addEventListener("input", (event) => {
+      /* Không debounce khi thay đổi màu sắc để có phản hồi tức thì */
+      if (event.target.type === 'color') return autoGenerate();
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => autoGenerate(), 300);
     });
 
     form.addEventListener("submit", event => {
